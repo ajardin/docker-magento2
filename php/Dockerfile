@@ -1,4 +1,4 @@
-FROM php:7.2-fpm-alpine as magento2_php
+FROM php:7.1-fpm-alpine as magento2_php
 
 # Install Magento requirements
 RUN \
@@ -40,6 +40,7 @@ RUN \
         soap \
         sockets \
         xsl \
+        mcrypt \
         zip && \
     yes "" | pecl install apcu redis && \
     docker-php-ext-enable apcu redis && \
@@ -77,7 +78,7 @@ ENTRYPOINT ["docker-custom-entrypoint"]
 # ======================================================================================================================
 FROM magento2_php as magento2_php_blackfire
 RUN \
-    curl -sS https://packages.blackfire.io/binaries/blackfire-php/1.23.1/blackfire-php-alpine_amd64-php-72.so \
+    curl -sS https://packages.blackfire.io/binaries/blackfire-php/1.25.0/blackfire-php-alpine_amd64-php-71.so \
         --output $(php -r "echo ini_get('extension_dir');")/blackfire.so && \
     docker-php-ext-enable blackfire
 # ======================================================================================================================
